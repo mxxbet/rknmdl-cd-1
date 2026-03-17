@@ -7,7 +7,7 @@ import yfinance as yf
 import datetime as dt
 
 
-file_path = r"./drive/My Drive/Ranking Model/Consumer Defensive/tickers_consumer_defensive.xlsx"
+file_path = "tickers_consumer_defensive.xlsx"
 
 df = pd.read_excel(file_path)
 
@@ -1843,6 +1843,6 @@ combined_df = pd.concat(data_list, axis=0, ignore_index=False)
 
 
 # voorbeeld: exporteer df naar een specifiek pad
-output_path = r"./drive/My Drive/Ranking Model/Consumer Defensive/consumer_defensive_1.xlsx"
+output_path = "consumer_defensive_1.xlsx"
 
 combined_df.to_excel(output_path, index=True)
