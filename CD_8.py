@@ -30,7 +30,7 @@ SP500_prices = ticker.history(start="2010-07-01", end=dt.datetime.today().strfti
 # Get yfinance data for stock
 
 
-API_KEY_list = ['MPJY6UQAOJ7OSW8X']
+API_KEY_list = ['5GLHJCYA4LP3HEA1']
 
 API_KEY_list = (API_KEY_list * 60)[:60]
 
@@ -40,7 +40,7 @@ empty_tickers_list = []
 ticker_data_without_eps = []
 
 
-for num in range(0, 6):
+for num in range(42, 48):
 
     API_KEY = API_KEY_list[num]
     SYMBOL = tickers[num]
