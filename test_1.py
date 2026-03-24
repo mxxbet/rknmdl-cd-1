@@ -30,7 +30,7 @@ SP500_prices = ticker.history(start="2010-07-01", end=dt.datetime.today().strfti
 # Get yfinance data for stock
 
 
-API_KEY_list = ['SCB1CY7T4EOIC64P']
+API_KEY_list = ['MPJY6UQAOJ7OSW8X']
 
 API_KEY_list = (API_KEY_list * 60)[:60]
 
@@ -617,9 +617,23 @@ for num in range(0, 6):
 
             ###############################################################################
             # Merge price data with ratios_df
+            ratios_df['reportedDate'] = pd.to_datetime(ratios_df['reportedDate'], errors='coerce')
+            prices['priceDate'] = pd.to_datetime(prices.index, errors='coerce')
 
-            ratios_df['reportedDate'] = pd.to_datetime(ratios_df['reportedDate'])
-            prices['priceDate'] = pd.to_datetime(prices.index).tz_localize(None)
+            # timezone verwijderen indien aanwezig
+            if getattr(prices['priceDate'].dt, 'tz', None) is not None:
+                prices['priceDate'] = prices['priceDate'].dt.tz_localize(None)
+
+            if getattr(ratios_df['reportedDate'].dt, 'tz', None) is not None:
+                ratios_df['reportedDate'] = ratios_df['reportedDate'].dt.tz_localize(None)
+
+            # forceer exact hetzelfde datetime-type
+            ratios_df['reportedDate'] = ratios_df['reportedDate'].astype('datetime64[ns]')
+            prices['priceDate'] = prices['priceDate'].astype('datetime64[ns]')
+
+            # verwijder lege datums
+            ratios_df = ratios_df.dropna(subset=['reportedDate'])
+            prices = prices.dropna(subset=['priceDate'])
 
             ratios_df = ratios_df.sort_values('reportedDate')
             prices = prices.sort_values('priceDate')
@@ -629,8 +643,10 @@ for num in range(0, 6):
                 ratios_df,
                 left_on='priceDate',
                 right_on='reportedDate',
-                direction='backward'  # use latest known fundamentals
+                direction='backward'
             )
+
+            
 
             merged_df = merged_df.set_index('priceDate')
 
@@ -1382,8 +1398,23 @@ for num in range(0, 6):
             ###############################################################################
             # Merge price data with ratios_df
 
-            ratios_df['reportedDate'] = pd.to_datetime(ratios_df['reportedDate'])
-            prices['priceDate'] = pd.to_datetime(prices.index).tz_localize(None)
+            ratios_df['reportedDate'] = pd.to_datetime(ratios_df['reportedDate'], errors='coerce')
+            prices['priceDate'] = pd.to_datetime(prices.index, errors='coerce')
+
+            # timezone verwijderen indien aanwezig
+            if getattr(prices['priceDate'].dt, 'tz', None) is not None:
+                prices['priceDate'] = prices['priceDate'].dt.tz_localize(None)
+
+            if getattr(ratios_df['reportedDate'].dt, 'tz', None) is not None:
+                ratios_df['reportedDate'] = ratios_df['reportedDate'].dt.tz_localize(None)
+
+            # forceer exact hetzelfde datetime-type
+            ratios_df['reportedDate'] = ratios_df['reportedDate'].astype('datetime64[ns]')
+            prices['priceDate'] = prices['priceDate'].astype('datetime64[ns]')
+
+            # verwijder lege datums
+            ratios_df = ratios_df.dropna(subset=['reportedDate'])
+            prices = prices.dropna(subset=['priceDate'])
 
             ratios_df = ratios_df.sort_values('reportedDate')
             prices = prices.sort_values('priceDate')
@@ -1393,7 +1424,7 @@ for num in range(0, 6):
                 ratios_df,
                 left_on='priceDate',
                 right_on='reportedDate',
-                direction='backward'  # use latest known fundamentals
+                direction='backward'
             )
 
             merged_df = merged_df.set_index('priceDate')
