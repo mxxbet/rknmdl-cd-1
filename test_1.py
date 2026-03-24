@@ -1847,7 +1847,7 @@ combined_df = pd.concat(data_list, axis=0, ignore_index=False)
 
 
 # voorbeeld: exporteer df naar een specifiek pad
-output_path = "consumer_defensive_1.xlsx"
+output_path = "output.xlsx"
 
 combined_df.to_excel(output_path, index=True)
 
