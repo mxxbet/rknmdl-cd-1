@@ -1,2 +1,7 @@
 pandas
 openpyxl
+requests
+numpy
+time
+yfinance
+datetime
